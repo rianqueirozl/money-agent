@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rian Achados &mdash; Casa e Cozinha</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap');
+    :root {
+      --bg: #080c10;
+      --surface: #0e1318;
+      --card: #131920;
+      --border: #1e2832;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --accent: #10b981;
+      --accent2: #059669;
+      --accent-glow: rgba(16,185,129,0.15);
+      --amber: #f59e0b;
+      --amber-dim: rgba(245,158,11,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; height: 400px;
+      background: radial-gradient(ellipse at 20% 0%, rgba(16,185,129,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    a { color: inherit; text-decoration: none; }
+    header {
+      background: rgba(14,19,24,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .header-inner {
+      max-width: 1120px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .logo { font-size: 1rem; font-weight: 700; color: var(--accent); letter-spacing: -0.01em; display: flex; align-items: center; gap: 6px; }
+    nav { display: flex; gap: 4px; flex-wrap: wrap; }
+    nav a {
+      padding: 6px 14px; border-radius: 8px;
+      font-size: 0.8rem; font-weight: 500; color: var(--muted);
+      transition: all 0.15s; border: 1px solid transparent;
+    }
+    nav a:hover { background: var(--accent-glow); color: var(--accent); border-color: rgba(16,185,129,0.2); }
+    nav a.active { background: var(--accent-glow); color: var(--accent); border-color: rgba(16,185,129,0.3); }
+    .disclosure {
+      background: var(--amber-dim);
+      border-bottom: 1px solid rgba(245,158,11,0.12);
+      padding: 9px 24px; font-size: 0.77rem; color: var(--amber); text-align: center;
+    }
+    .hero { padding: 52px 24px 32px; text-align: center; }
+    .hero h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 10px; }
+    .hero p { color: var(--muted); font-size: 0.95rem; max-width: 480px; margin: 0 auto; }
+    .stats {
+      display: flex; gap: 0; justify-content: center;
+      max-width: 400px; margin: 24px auto 0;
+      border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; background: var(--surface);
+    }
+    .stat {
+      flex: 1; padding: 14px 12px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-n { font-size: 1.3rem; font-weight: 700; color: var(--accent); letter-spacing: -0.03em; }
+    .stat-l { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px; padding: 24px;
+      max-width: 1120px; margin: 0 auto;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border); border-radius: 14px;
+      overflow: hidden; display: flex; flex-direction: column;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(16,185,129,0.35);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(16,185,129,0.1);
+    }
+    .card-img {
+      height: 110px; background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .badges { display: flex; gap: 5px; flex-wrap: wrap; }
+    .badge {
+      font-size: 0.67rem; padding: 2px 8px; border-radius: 4px;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .b-amazon { background: rgba(255,153,0,0.1); color: #ff9900; border: 1px solid rgba(255,153,0,0.2); }
+    .b-top { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+    .b-novo { background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(16,185,129,0.25); }
+    .card-title { font-size: 0.93rem; font-weight: 600; line-height: 1.35; }
+    .card-desc { font-size: 0.81rem; color: var(--muted); line-height: 1.55; flex: 1; }
+    .card-price { font-size: 1.05rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em; }
+    .btn-cta {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 10px; background: var(--accent); color: #000;
+      border-radius: 9px; font-weight: 700; font-size: 0.82rem;
+      margin-top: 4px; transition: opacity 0.15s, transform 0.15s;
+    }
+    .btn-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-pending {
+      display: block; padding: 10px;
+      background: none; border: 1px dashed rgba(16,185,129,0.25);
+      color: var(--muted); text-align: center; border-radius: 9px;
+      font-size: 0.77rem; margin-top: 4px; cursor: not-allowed;
+    }
+    .cat-links {
+      display: flex; gap: 12px; justify-content: center;
+      flex-wrap: wrap; padding: 0 24px 40px;
+    }
+    .cat-card {
+      padding: 16px 28px; background: var(--card);
+      border: 1px solid var(--border); border-radius: 12px;
+      font-weight: 600; font-size: 0.9rem;
+      transition: all 0.15s;
+    }
+    .cat-card:hover { border-color: var(--accent); background: var(--accent-glow); color: var(--accent); }
+    .section-label {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--muted);
+      padding: 20px 24px 4px; max-width: 1120px; margin: 0 auto;
+    }
+    footer {
+      margin-top: 60px; padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      text-align: center; color: var(--muted); font-size: 0.77rem; line-height: 1.9;
+    }
+    footer strong { color: var(--text); }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">🔍 Rian Achados</div>
+    <nav><a href="index.html">Inicio</a><a href="casa-cozinha.html" class="active">Casa e Cozinha</a><a href="tecnologia.html">Tecnologia</a><a href="beleza.html">Beleza</a></nav>
+  </div>
+</header>
+<div class="disclosure">⚠️ Esta pagina contem links de afiliado. Se voce comprar por um deles, posso receber uma comissao sem custo adicional para voce.</div>
+<div class="hero">
+  <h1>&#127968; Casa e Cozinha</h1>
+  <p>Achados selecionados para deixar sua casa mais organizada, funcional e bonita.</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-n">10</div><div class="stat-l">Produtos</div></div>
+    <div class="stat"><div class="stat-n">R$ 30</div><div class="stat-l">A partir de</div></div>
+    <div class="stat"><div class="stat-n">R$ 400</div><div class="stat-l">Ate</div></div>
+  </div>
+</div>
+<div class="grid">
+    <div class="card">
+      <div class="card-img">🍳</div>
+      <div class="card-body">
+        <div class="badges"><span class="badge b-amazon">Amazon</span><span class="badge b-top">TOP</span></div>
+        <div class="card-title">Air Fryer 4L</div>
+        <div class="card-desc">Cozinhe com menos oleo e mais praticidade. Queridinha do Pinterest de cozinha e da vida.</div>
+        <div class="card-price">A partir de R$ 250</div>
+        <a href="https://amzn.to/4uj6DhW" class="btn-cta" target="_blank" rel="nofollow sponsored noopener">Ver na Amazon &rarr;</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-img">🧊</div>
+      <div class="card-body">
+        <div class="badges"><span class="badge b-amazon">Amazon</span><span class="badge b-top">TOP</span></div>
+        <div class="card-title">Organizadores para Geladeira</div>
+        <div class="card-desc">Deixe sua geladeira linda e organizada como foto de Pinterest.</div>
+        <div class="card-price">A partir de R$ 80</div>
+        <a href="https://amzn.to/4oilqs8" class="btn-cta" target="_blank" rel="nofollow sponsored noopener">Ver na Amazon &rarr;</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-img">🧄</div>
+      <div class="card-body">
+        <div class="badges"><span class="badge b-amazon">Amazon</span><span class="badge b-novo">NOVO</span></div>
+        <div class="card-title">Porta-temperos Magnetico</div>
+        <div class="card-desc">Organize os temperos de forma visual e pratica direto na parede da cozinha.</div>
+        <div class="card-price">A partir de R$ 90</div>
+        <span class="btn-pending">&#128279; Link em breve &mdash; aguardando cadastro Amazon</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-img">🫧</div>
+      <div class="card-body">
+        <div class="badges"><span class="badge b-amazon">Amazon</span><span class="badge b-novo">NOVO</span></div>
+        <div class="card-title">Dispenser de Sabao com Esponja</div>
+        <div class="card-desc">A pia mais bonita e organizada com um produto so.</div>
+        <div class="card-price">A partir de R$ 60</div>
+        <span class="btn-pending">&#128279; Link em breve &mdash; aguardando cadastro Amazon</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-img">🧊</div>
+      <div class="card-body">
+        <div class="badges"><span class="badge b-amazon">Amazon</span></div>
+        <div class="card-title">Forma de Gelo em Silicone</div>
+        <div class="card-desc">Gelo em formatos criativos e super facil de tirar da forma.</div>
+        <div class="card-price">A partir de R$ 30</div>
+        <span class="btn-pending">&#128279; Link em breve &mdash; aguardando cadastro Amazon</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-img">🍲</div>
+      <div class="card-body">
+        <div class="badges"><span class="badge b-amazon">Amazon</span></div>
+        <div class="card-title">Panela de Pressao Eletrica</div>
+        <div class="card-desc">Cozinhe rapido e com seguranca. Boa para familias e quem tem pressa.</div>
+        <div class="card-price">A partir de R$ 400</div>
+        <span class="btn-pending">&#128279; Link em breve &mdash; aguardando cadastro Amazon</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-img">🔪</div>
+      <div class="card-body">
+        <div class="badges"><span class="badge b-amazon">Amazon</span></div>
+        <div class="card-title">Jogo de Facas com Suporte</div>
+        <div class="card-desc">Kit completo de facas com suporte elegante para a bancada.</div>
+        <div class="card-price">A partir de R$ 150</div>
+        <span class="btn-pending">&#128279; Link em breve &mdash; aguardando cadastro Amazon</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-img">🪣</div>
+      <div class="card-body">
+        <div class="badges"><span class="badge b-amazon">Amazon</span></div>
+        <div class="card-title">Balde com Espremedor MOP</div>
+        <div class="card-desc">Limpeza pratica sem molhar as maos. Essencial para quem tem casa grande.</div>
+        <div class="card-price">A partir de R$ 100</div>
+        <span class="btn-pending">&#128279; Link em breve &mdash; aguardando cadastro Amazon</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-img">🗑️</div>
+      <div class="card-body">
+        <div class="badges"><span class="badge b-amazon">Amazon</span></div>
+        <div class="card-title">Lixeira com Sensor de Movimento</div>
+        <div class="card-desc">Abre automaticamente. Mais higiene na cozinha ou banheiro.</div>
+        <div class="card-price">A partir de R$ 120</div>
+        <span class="btn-pending">&#128279; Link em breve &mdash; aguardando cadastro Amazon</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-img">🧻</div>
+      <div class="card-body">
+        <div class="badges"><span class="badge b-amazon">Amazon</span></div>
+        <div class="card-title">Suporte Papel Toalha Inox</div>
+        <div class="card-desc">Detalhe que muda a cozinha. Bonito, pratico e duradouro.</div>
+        <div class="card-price">A partir de R$ 70</div>
+        <span class="btn-pending">&#128279; Link em breve &mdash; aguardando cadastro Amazon</span>
+      </div>
+    </div>
+</div>
+<footer>
+  <strong>Rian Achados</strong> &mdash; Curadoria Casa e Cozinha<br>
+  Links de afiliado Amazon. Comissao sem custo adicional para o comprador.<br>
+  <span style="color:#2d3748;">Atualizado em 06/06/2026</span>
+</footer>
+</body>
+</html>
